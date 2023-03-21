@@ -138,21 +138,19 @@ def getAllCompaniesInfo():
             row=row,
             companyName=companyName,
             driver=driver,
-            pause=pauseForLogin,
         )
         getCompanyInfo(
             lang="CN",
             row=row,
             companyName=companyName,
             driver=driver,
-            pause=pauseForLogin,
         )
 
     # Quit all browser tabs/windows
     driver.quit()
 
 
-def getCompanyInfo(lang: str, row: int, companyName: str, driver, pause: bool):
+def getCompanyInfo(lang: str, row: int, companyName: str, driver):
     # Get a single company's information in the language given
 
     goToTab(num=1, driver=driver)
