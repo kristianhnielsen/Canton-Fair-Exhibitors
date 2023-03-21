@@ -5,6 +5,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from time import sleep
 
+## IMPORTANT! BREAKPOINT AT LINE 173 TO PAUSE FOR LOGIN ##
+
 # Selenium CSS classes
 cardCssClass = "index__ExhibitorCard--uaYJ5"
 cardTitleClass = "index__title--PQWpm"
@@ -55,8 +57,6 @@ refWB = openpyxl.load_workbook(filename=ReferenceExtFilename)
 refSheet = refWB[sheetName]
 wb = openpyxl.load_workbook(filename=extFilename)
 sheet = wb[sheetName]
-
-# Other
 
 
 def setPauseForLogin(val: bool):
@@ -122,13 +122,12 @@ def getReference():
 
 def getAllCompaniesInfo():
     # Get all companies' information and store is in an XLSX file
-    pauseForLogin = True
 
     # Init Selenium Browser
     driver = webdriver.Firefox()
 
     # Search for every company name
-    for row in range(2, 10_000):
+    for row in range(328, 10_000):
         goToTab(num=1, driver=driver)
         companyName = refSheet[f"A{row}"].value
         print(f"Getting info for row #{row}")
@@ -167,14 +166,9 @@ def getCompanyInfo(lang: str, row: int, companyName: str, driver, pause: bool):
 
     sleep(3)
 
-    # Break here to manually Sign In
+    # Breakpoint here to manually Sign In
     # after login wait for popup, click the X
-    if pause == True:
-        input(
-            "Press Enter once you have logged in, and returned to the current webpage (close pop-up if relevant) \nIf you don't have login credentials, please press Enter to continue"
-        )
-        pause = False
-
+    # after login disable breakpoint
     try:
         card = driver.find_elements(By.CLASS_NAME, "index__title--PQWpm")[0]
     except (IndexError):
