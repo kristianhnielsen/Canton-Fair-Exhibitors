@@ -57,7 +57,10 @@ wb = openpyxl.load_workbook(filename=extFilename)
 sheet = wb[sheetName]
 
 # Other
-pauseForLogin = True
+
+
+def setPauseForLogin(val: bool):
+    pauseForLogin = val
 
 
 def getCantonFairURL(page: int, size=60):
@@ -119,25 +122,38 @@ def getReference():
 
 def getAllCompaniesInfo():
     # Get all companies' information and store is in an XLSX file
+    pauseForLogin = True
 
     # Init Selenium Browser
     driver = webdriver.Firefox()
 
     # Search for every company name
-    for row in range(2, 10_000):
+    for row in range(328, 10_000):
         goToTab(num=1, driver=driver)
         companyName = refSheet[f"A{row}"].value
         print(f"Getting info for row #{row}")
         if companyName == None:
             break
-        getCompanyInfo(lang="EN", row=row, companyName=companyName, driver=driver)
-        getCompanyInfo(lang="CN", row=row, companyName=companyName, driver=driver)
+        getCompanyInfo(
+            lang="EN",
+            row=row,
+            companyName=companyName,
+            driver=driver,
+            pause=pauseForLogin,
+        )
+        getCompanyInfo(
+            lang="CN",
+            row=row,
+            companyName=companyName,
+            driver=driver,
+            pause=pauseForLogin,
+        )
 
     # Quit all browser tabs/windows
     driver.quit()
 
 
-def getCompanyInfo(lang: str, row: int, companyName: str, driver):
+def getCompanyInfo(lang: str, row: int, companyName: str, driver, pause: bool):
     # Get a single company's information in the language given
 
     goToTab(num=1, driver=driver)
@@ -153,11 +169,11 @@ def getCompanyInfo(lang: str, row: int, companyName: str, driver):
 
     # Break here to manually Sign In
     # after login wait for popup, click the X
-    if pauseForLogin:
+    if pause == True:
         input(
             "Press Enter once you have logged in, and returned to the current webpage (close pop-up if relevant) \nIf you don't have login credentials, please press Enter to continue"
         )
-        pauseForLogin = False
+        pause = False
 
     try:
         card = driver.find_elements(By.CLASS_NAME, "index__title--PQWpm")[0]
@@ -285,5 +301,5 @@ def getCompanyInfo(lang: str, row: int, companyName: str, driver):
 
 
 if __name__ == "__main__":
-    getReference()
+    # getReference()
     getAllCompaniesInfo()
