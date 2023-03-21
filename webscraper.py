@@ -127,7 +127,7 @@ def getAllCompaniesInfo():
     driver = webdriver.Firefox()
 
     # Search for every company name
-    for row in range(328, 10_000):
+    for row in range(2, 10_000):
         goToTab(num=1, driver=driver)
         companyName = refSheet[f"A{row}"].value
         print(f"Getting info for row #{row}")
