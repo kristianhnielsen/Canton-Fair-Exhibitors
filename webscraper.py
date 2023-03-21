@@ -182,7 +182,13 @@ def getCompanyInfo(lang: str, row: int, companyName: str, driver):
     companyBaseURL = driver.current_url
 
     # Contact Page
-    driver.get(f"{companyBaseURL}contact")
+    try:
+        driver.get(f"{companyBaseURL}contact")
+    except (seleniumException.WebDriverException):
+        print("WebDriverException. Trying again in 10s")
+        sleep(10)
+        driver.get(f"{companyBaseURL}contact")
+
     sleep(3)
     try:
         gatedSection = driver.find_element(By.CLASS_NAME, "index__gate--EcyhK")
@@ -252,7 +258,13 @@ def getCompanyInfo(lang: str, row: int, companyName: str, driver):
         saveMainFile()
 
     # Introduction Page
-    driver.get(f"{companyBaseURL}introduction")
+    try:
+        driver.get(f"{companyBaseURL}introduction")
+    except (seleniumException.WebDriverException):
+        print("WebDriverException. Trying again in 10s")
+        sleep(10)
+        driver.get(f"{companyBaseURL}introduction")
+
     sleep(2)
     contactElements = driver.find_elements(By.CLASS_NAME, "index__item--vuNk7")
 
@@ -293,5 +305,5 @@ def getCompanyInfo(lang: str, row: int, companyName: str, driver):
 
 
 if __name__ == "__main__":
-    # getReference()
+    getReference()
     getAllCompaniesInfo()
